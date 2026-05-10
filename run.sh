@@ -1,5 +1,5 @@
 #!/bin/bash
-cd /home/vedanth-vaidya/.gemini/antigravity/scratch/admm_puzzle
+cd file_directory
 
 # Create a virtual environment if it doesn't already exist
 if [ ! -d "venv" ]; then

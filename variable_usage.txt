@@ -1,0 +1,55 @@
+=========================================================
+SYSTEM VARIABLE & FUNCTION DOCUMENTATION
+=========================================================
+This document provides a production-level technical reference for all variables, matrices, and functions across the Consensus ADMM package.
+
+---------------------------------------------------------
+1. GLOBAL VARIABLES & HYPERPARAMETERS (config.py)
+---------------------------------------------------------
+- H, W (int): Grid dimensions for the puzzle matrix. Height and Width.
+- R1_mask (bool matrix): Defines Region 1. True where Arm 1 has jurisdiction.
+- R2_mask (bool matrix): Defines Region 2. True where Arm 2 has jurisdiction.
+- R12_mask (bool matrix): Defines the overlapping region. True strictly at the intersection.
+- rho (float): Augmented Lagrangian penalty parameter. Controls how strictly ADMM punishes boundary divergence.
+- max_iter (int): Safeguard. The maximum iterations allowed before ADMM gives up.
+- tol (float): Convergence threshold. If residuals drop below this, optimization succeeds.
+- SEED (int): Ensures reproducible noise generation for testing.
+
+---------------------------------------------------------
+2. LOCAL VARIABLES (arm_models.py)
+---------------------------------------------------------
+- local_pref (matrix): The original, biased "view" or state the arm wants to maintain.
+- x (matrix): The current working state of the arm. This is updated continuously during ADMM.
+- diff (matrix): The numerical delta between the current state 'x' and the 'local_pref'.
+- new_x (matrix): A temporary buffer used during the algebraic local update before committing changes to 'x'.
+- pref_shared, z_shared, u_shared (vectors): The sliced arrays containing values strictly located within the overlapping 'shared_mask' boundary.
+
+---------------------------------------------------------
+3. ADMM ORCHESTRATION VARIABLES (consensus_admm.py)
+---------------------------------------------------------
+- z (matrix): The Global Consensus Variable. Represents the mathematically negotiated "middle ground" on the shared boundary.
+- u1, u2 (matrices): The Dual Variables for Arm 1 and Arm 2. They act as "error accumulators" that penalize the arms if their 'x' matrices drift away from 'z'.
+- z_prev (matrix): A snapshot of 'z' from the previous iteration. Crucial for calculating the Dual Residual.
+- x1_b, x2_b (vectors): The boundary values ripped from the 'x' matrices of both arms.
+- primal_res1, primal_res2 (float): Sub-components of the primal residual.
+- primal_res (float): The combined Primal Residual (spatial error between the arms).
+- dual_res (float): The Dual Residual (temporal drift of the consensus variable 'z').
+- obj1, obj2 (float): The scalar "Local Cost" penalties derived from how much Arm 1 and Arm 2 had to alter their original preferences.
+
+---------------------------------------------------------
+4. MACHINE LEARNING VARIABLES (ml_model.py)
+---------------------------------------------------------
+- model (Ridge object): A scikit-learn Ridge Regression instance.
+- X (list of arrays): The training feature matrix containing stacked boundary disputes (b1 + b2).
+- y (list of arrays): The target vectors containing the ground truth boundary.
+- b1, b2 (vectors): Sliced boundary segments used as input features.
+- pred_b (vector): The model's numerical prediction for what the final, optimal boundary will look like.
+
+---------------------------------------------------------
+5. KEY FUNCTIONS
+---------------------------------------------------------
+- make_example_labels(): Returns (ground_truth, pref1, pref2). Constructs the puzzle matrices with additive Gaussian noise and forced boundary conflicts.
+- update_local(z, u, rho): Executes the closed-form quadratic solution for the x-update. Updates the arm's state matrix.
+- run(max_iter, tol): The main ADMM loop. Sequentially calls x-update, z-update, and u-update, computes residuals, logs history, and evaluates exit conditions.
+- get_global_state(): Performs a matrix stitch. Overlays Arm 1's non-shared region, Arm 2's non-shared region, and the consensus 'z' region to create the final unified image.
+- predict_initial_z(): Fires a forward pass on the Ridge model to guess the initial 'z' matrix, vastly reducing the ADMM iteration count.

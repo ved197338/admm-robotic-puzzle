@@ -1,7 +1,7 @@
 =========================================================
 SYSTEM VARIABLE & FUNCTION DOCUMENTATION
 =========================================================
-This document provides a production-level technical reference for all variables, matrices, and functions across the Consensus ADMM package.
+This document provides a quick reference cheat sheet for all the variables, matrices, and functions used across this ADMM project.
 
 ---------------------------------------------------------
 1. GLOBAL VARIABLES & HYPERPARAMETERS (config.py)

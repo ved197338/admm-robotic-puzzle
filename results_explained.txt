@@ -2,7 +2,7 @@
 WHAT DO THE RESULTS MEAN? (A quick guide to the output)
 =========================================================
 
-When you run this project, you'll see some terminal logs and a few generated graphs. Here is a human-friendly breakdown of exactly what comes out and what it actually means.
+When you run this project, you'll see some terminal logs and a few generated graphs. Here is a quick breakdown of exactly what the output represents and how to interpret it.
 
 ---------------------------------------------------------
 1. THE GRAPHS WE GET

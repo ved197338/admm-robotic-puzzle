@@ -14,7 +14,7 @@ Initially, both arms have totally different ideas of what that overlapping bound
 ## Some cool things included:
 - **Math Optimization**: The code uses a quick closed-form quadratic update (the 'x-update') to keep things fast.
 - **Decentralized Negotiation**: It tracks errors using Primal and Dual variables, penalizing the arms when they refuse to agree.
-- **Machine Learning Trick**: I threw in a lightweight `scikit-learn` Ridge Regressor. It acts like a psychic, predicting the optimal consensus variable ($z$) upfront so the ADMM loop finishes way faster.
+- **Machine Learning Trick**: I included a lightweight `scikit-learn` Ridge Regressor. It acts as a predictor, estimating the optimal consensus variable ($z$) upfront so the ADMM loop finishes way faster.
 - **Visuals**: The script automatically generates learning curve charts for the Primal/Dual Residuals and plots some nice colored heatmaps of the final puzzle state.
 
 ## What's in the files?

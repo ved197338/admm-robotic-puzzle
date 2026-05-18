@@ -34,7 +34,7 @@ When you run the code, it prints out exactly how many "iterations" (rounds of ne
 You will notice it compares two phases:
 
 - Standard ADMM: It starts guessing from zero, and takes a certain number of rounds (e.g., 17) to find the answer.
-- ML-Assisted ADMM: Our ML "psychic" model guesses the right answer ahead of time. By giving the arms a very smart initial guess, the algorithm is much more stable and can often find the perfect agreement much faster.
+- ML-Assisted ADMM: Our ML model guesses the right answer ahead of time. By giving the arms a very smart initial guess, the algorithm is much more stable and can often find the perfect agreement much faster.
 
 ---------------------------------------------------------
 HOW DOES IT CONCLUDE?

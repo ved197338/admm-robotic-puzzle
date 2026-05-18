@@ -1,5 +1,7 @@
 # Consensus ADMM Robotic Puzzle Simulator
 
+*Project by Vedanth Vaidya and Sameer Reddy*
+
 Hey there! This is a simple decentralized optimization project I built. It simulates two independent robotic arms trying to put together a shared puzzle boundary using **Consensus ADMM** (Alternating Direction Method of Multipliers).
 
 ## What's happening here?

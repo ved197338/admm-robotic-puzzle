@@ -1,0 +1,43 @@
+=========================================================
+WHAT DO THE RESULTS MEAN? (A quick guide to the output)
+=========================================================
+
+When you run this project, you'll see some terminal logs and a few generated graphs. Here is a human-friendly breakdown of exactly what comes out and what it actually means.
+
+---------------------------------------------------------
+1. THE GRAPHS WE GET
+---------------------------------------------------------
+
+Graph A: initial_disagreement.png
+- What it is: A side-by-side look at what Arm 1 wants to build, what Arm 2 wants to build, and what happens if you mash them together blindly.
+- What it means: You'll see an ugly, mismatched jagged line in the middle of the third picture. It proves that without our math (ADMM), the two robots would fail to build a cohesive puzzle because they are fighting over the boundary.
+
+Graph B: residuals.png (Primal and Dual lines dropping)
+- What it is: Two line graphs that start high and quickly dive down to zero.
+- What it means: 
+  - The "Primal" line going to zero literally means the physical gap between Arm 1 and Arm 2 is closing. Once it hits zero, they are matching their puzzle pieces perfectly.
+  - The "Dual" line going to zero means the "negotiation" has stopped. Neither arm feels the need to argue or change their mind anymore. They are totally satisfied.
+
+Graph C: objective.png (The Cost line)
+- What it is: A line chart that spikes early on and then flattens out into a completely horizontal line.
+- What it means: The "Cost" is basically a tracker of how much we had to ruin the arms' original plans to force an agreement. The flat line at the end means we found the absolute lowest possible damage to the overall puzzle. We didn't just find a random agreement; we found the *best possible* compromise.
+
+Graph D: final_puzzle.png
+- What it is: The final, combined colored picture of the puzzle after ADMM finishes working.
+- What it means: You will see a perfectly smooth wave pattern. No breaks, no ugly lines, no mismatched colors in the center. This is the visual proof that our algorithm works flawlessly!
+
+---------------------------------------------------------
+2. THE TERMINAL LOGS
+---------------------------------------------------------
+
+When you run the code, it prints out exactly how many "iterations" (rounds of negotiation) it took to finish the job.
+You will notice it compares two phases:
+
+- Standard ADMM: It starts guessing from zero, and takes a certain number of rounds (e.g., 17) to find the answer.
+- ML-Assisted ADMM: Our ML "psychic" model guesses the right answer ahead of time. By giving the arms a very smart initial guess, the algorithm is much more stable and can often find the perfect agreement much faster.
+
+---------------------------------------------------------
+HOW DOES IT CONCLUDE?
+---------------------------------------------------------
+So, what's the big takeaway? 
+The final result proves that even if two independent robots (or software agents) can only talk to a central referee and can't even see each other's full puzzles, they can still perfectly stitch together a complex shared environment. The math successfully forces a compromise, the line charts mathematically prove the gap closed to exactly zero, and the final image shows a beautifully solved puzzle with zero errors on the seam.

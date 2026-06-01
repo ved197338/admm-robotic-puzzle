@@ -10,9 +10,9 @@ import numpy as np
 # ---------------------------------------------------------
 # Puzzle Dimensions
 # ---------------------------------------------------------
-# Height and width of the global puzzle grid
-H = 8
-W = 16
+# Height and width of the global grid
+H = 100
+W = 200
 
 # ---------------------------------------------------------
 # Regional Masks
@@ -32,9 +32,9 @@ R12_mask[:, W//2 - 1:W//2 + 1] = True
 # ---------------------------------------------------------
 # ADMM Optimization Hyperparameters
 # ---------------------------------------------------------
-rho = 1.0       # Augmented Lagrangian penalty parameter
-max_iter = 100  # Maximum number of ADMM iterations to prevent infinite loops
-tol = 1e-4      # Convergence tolerance for primal and dual residuals
+rho = 1.5       # Augmented Lagrangian penalty parameter
+max_iter = 250  # Maximum number of ADMM iterations to prevent infinite loops
+tol = 1e-5      # Convergence tolerance for primal and dual residuals
 
 # Random seed for reproducible dataset generation
 SEED = 42

@@ -1,35 +1,34 @@
-# Consensus ADMM Robotic Puzzle Simulator
+# Consensus ADMM Distributed Optimization
 
 *Project by Vedanth Vaidya and Sameer Reddy*
 
-Hey there! This is a simple decentralized optimization project I built. It simulates two independent robotic arms trying to put together a shared puzzle boundary using **Consensus ADMM** (Alternating Direction Method of Multipliers).
+This repository implements a decentralized optimization protocol. It coordinates two independent computing nodes over a shared grid utilizing **Consensus ADMM** (Alternating Direction Method of Multipliers).
 
-## What's happening here?
-- **Robotic Arm 1** is in charge of the left half of the grid.
-- **Robotic Arm 2** is in charge of the right half of the grid.
-- Both arms overlap right in the center (Region 12).
+## Project Overview
+- **Node 1** processes the left partition of the grid matrix.
+- **Node 2** processes the right partition of the grid matrix.
+- Both nodes share an overlapping boundary region (Region 12).
 
-Initially, both arms have totally different ideas of what that overlapping boundary should look like. Consensus ADMM forces them to negotiate and find a mathematical middle ground. This makes sure the final puzzle stitches together perfectly, without forcing either arm to completely abandon their original plans.
+Initially, both nodes initialize with strictly conflicting local preferences regarding the overlapping boundary. Consensus ADMM executes a rigorous mathematical negotiation, resolving the conflict through distributed alternating updates. This guarantees absolute convergence without necessitating a centralized processor to maintain the full global state.
 
-## Some cool things included:
-- **Math Optimization**: The code uses a quick closed-form quadratic update (the 'x-update') to keep things fast.
-- **Decentralized Negotiation**: It tracks errors using Primal and Dual variables, penalizing the arms when they refuse to agree.
-- **Machine Learning Trick**: I included a lightweight `scikit-learn` Ridge Regressor. It acts as a predictor, estimating the optimal consensus variable ($z$) upfront so the ADMM loop finishes way faster.
-- **Visuals**: The script automatically generates learning curve charts for the Primal/Dual Residuals and plots some nice colored heatmaps of the final puzzle state.
+## Core Implementation Features
+- **Primal Optimization**: The protocol utilizes a closed-form quadratic update (the `x-update`) allowing nodes to analytically compute their local minima in $O(1)$ temporal complexity per iteration.
+- **Dual Constraints**: Discrepancies at the boundary are aggressively penalized via a dual variable ($u$), preventing instability and enforcing strict mathematical consensus.
+- **High-Resolution Verification**: The algorithm executes over a dense 100x200 matrix ($H=100$, $W=200$) with a strict convergence tolerance ($\epsilon = 10^{-5}$) and an Augmented Lagrangian penalty ($\rho = 1.5$).
+- **Metric Exporting**: The execution pipeline automatically generates high-fidelity convergence plots (Primal/Dual Residuals and Objective Costs) and spatial heatmaps.
 
-## What's in the files?
-- `config.py`: Just some grid dimensions, ADMM parameters like $\rho$, and the boolean masks for the regions.
-- `puzzle_env.py`: Creates a noisy environment, generates some conflicting ground truths, and handles the matplotlib drawing.
-- `arm_models.py`: Holds the local 'x-update' math and cost functions for each robotic agent.
-- `consensus_admm.py`: The main coordinator. It handles the $z$-updates, $u$-updates, and tracks the residual convergence.
-- `ml_model.py`: The Ridge Regression model used to warm-start ADMM.
-- `main.py`: The main script to run everything and compare standard ADMM against the ML version.
-- `variable_usage.txt`: A quick cheat sheet explaining what all the variables and matrices do.
-- `results/plots/`: The folder where all the generated charts and puzzle images get saved.
+## Codebase Architecture
+- `config.py`: Defines the matrix dimensionality, hyperparameter values ($\rho$, $tol$, $max\_iter$), and the boolean masks used to restrict node memory limits.
+- `puzzle_env.py`: Generates the underlying boundary states, injects synthetic regional noise, and manages `matplotlib` rendering.
+- `arm_models.py`: Encapsulates the local computation blocks (`x-update` matrices) for the individual nodes.
+- `consensus_admm.py`: The central orchestrator. It manages the $z$-updates, $u$-updates, and tracks the residual convergence threshold.
+- `main.py`: The primary execution script that initializes the nodes, executes the ADMM optimization cycle, and plots the tracked data.
+- `variable_usage.txt`: Comprehensive documentation defining the dimensionality and functional purpose of all mathematical variables.
+- `results/plots/`: Directory for exported visualization artifacts.
 
-## How to run it
+## Execution
 
-I wrote a quick automation script so you don't have to deal with installing packages globally. It just sets up a local Python virtual environment and installs the required stuff (`numpy`, `scikit-learn`, `matplotlib`).
+A shell script is provided to automate environment initialization and dependency resolution (`numpy`, `matplotlib`).
 
 ```bash
 # Clone the repository
@@ -41,4 +40,4 @@ chmod +x run.sh
 ./run.sh
 ```
 
-Once it finishes, you'll see the convergence logs printed in the terminal, and you can check out the neat plots it saves in the `/results` folder.
+Upon execution, the terminal will log the optimization iterations until absolute convergence is reached. Output artifacts will be saved automatically to the `/results/plots` directory.
